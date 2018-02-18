@@ -1,0 +1,9 @@
+http://agiletesting.blogspot.com.au/2016/06/running-gatling-load-tests-in-docker.html
+
+docker pull denvazh/gatling:2.2.2
+
+docker run -it -v c:/repos/learning/dinkum-coin-api/test/performance/user-files:/opt/gatling/user-files -v c:/repos/learning/dinkum-coin-api/test/performance/results:/opt/gatling/results  gatling:local -s DinkumCoinSimulation
+
+
+docker run -rm -v c:/repos/learning/dinkum-coin-api/test/performance/user-files:/opt/gatling/user-files -v c:/repos/learning/dinkum-coin-api/test/performance/results:/opt/gatling/results  gatling:local -s DinkumCoinSimulation
+

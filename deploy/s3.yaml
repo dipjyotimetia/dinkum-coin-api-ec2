@@ -1,0 +1,63 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "S3 bucket for dinkum coin lambda builds"
+Outputs:
+  RoleArn:
+    Value: !GetAtt "WriteBucketRole.Arn"
+  S3BucketArn:
+    Value: !GetAtt "S3Bucket.Arn"
+Parameters:
+  AllowedRoleArns:
+    Description: "List of IAM roles allowed to assume the Write Bucket role"
+    Type: "CommaDelimitedList"
+  S3BucketName:
+    Description: "Name to assign to S3 Bucket"
+    Type: "String"
+Resources:
+  WriteBucketRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "DinkumCoinApi-WriteBucketRole"
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: "sts:AssumeRole"
+            Effect: "Allow"
+            Principal:
+              AWS: !Ref "AllowedRoleArns"
+        Version: "2012-10-17"
+      Path: "/"
+      Policies:
+        - PolicyName: "AllowPutBucketAccess"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action: "s3:PutObject"
+                Resource: !Sub "${S3Bucket.Arn}/*"
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref "S3BucketName"
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref "S3Bucket"
+      PolicyDocument:
+        Statement:
+          - Action:
+              - "s3:ListBucket"
+              - "s3:GetBucketLocation"
+            Effect: "Allow"
+            Resource: !GetAtt "S3Bucket.Arn"
+            Principal:
+              AWS:
+                - "arn:aws:iam::841604682342:root"
+                - "arn:aws:iam::250658028269:root"
+          - Action:
+              - "s3:GetObject"
+              - "s3:PutObject"
+            Effect: "Allow"
+            Resource: !Sub "${S3Bucket.Arn}/*"
+            Principal:
+              AWS:
+                - "arn:aws:iam::841604682342:root"
+                - "arn:aws:iam::250658028269:root"

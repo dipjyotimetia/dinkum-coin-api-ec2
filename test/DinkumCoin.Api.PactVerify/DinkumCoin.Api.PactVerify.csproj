@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0-preview-20170628-02" />
+    <PackageReference Include="xunit" Version="2.2.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.3.5" />
+    <PackageReference Include="AWSSDK.Core" Version="3.3.21.6" />
+    <PackageReference Include="PactNet" Version="2.2.1" />
+    <PackageReference Include="PactNet.OSX" Version="2.2.1" />
+    <PackageReference Include="PactNet.Linux.x64" Version="2.2.1" />
+    <PackageReference Include="Aqovia.PactProducerVerifier" Version="1.0.40" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\DinkumCoin.Api\DinkumCoin.Api.csproj" />
+    <ProjectReference Include="..\..\src\DinkumCoin.Core\DinkumCoin.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="pacts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="pacts\dinkum-coin-web-dinkum-coin-api.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

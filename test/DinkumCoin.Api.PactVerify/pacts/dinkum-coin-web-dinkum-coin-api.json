@@ -1,0 +1,35 @@
+{
+  "consumer": {
+    "name": "dinkum-coin-web"
+  },
+  "provider": {
+    "name": "dinkum-coin-api"
+  },
+  "interactions": [
+    {
+      "description": "a request for wallets",
+      "providerState": "i have at least one wallet",
+      "request": {
+        "method": "GET",
+        "path": "/api/wallets",
+        "headers": {
+          "Accept": "application/json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "dd9fbf9b-a500-4c00-b00d-069ea4080004": "Test Wallet"
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}

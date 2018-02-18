@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "DynamoDB table used by DinkumCoin lambdas"
+
+Parameters: 
+  IamRoleLambdaExecution:
+    Description: Arn of IAM Role used by lambda
+    Type: String    
+
+Outputs:
+  WalletTableArn:
+    Value: !GetAtt "DynamoDbWalletTable.Arn"
+
+Resources:
+  DynamoDbWalletTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Wallet
+      AttributeDefinitions:
+       - AttributeName: Id
+         AttributeType: S
+      KeySchema:
+       - AttributeName: Id
+         KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+  
+  DynamoDBIamPolicy:
+    Type: AWS::IAM::Policy
+    DependsOn: DynamoDbWalletTable
+    Properties:
+      PolicyName: lambda-dynamodb
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+         - Effect: Allow
+           Action:
+             - dynamodb:GetItem
+             - dynamodb:PutItem
+             - dynamodb:DescribeTable
+             - dynamodb:Scan
+           Resource: arn:aws:dynamodb:*:*:table/Wallet
+      Roles:
+       - Ref: IamRoleLambdaExecution

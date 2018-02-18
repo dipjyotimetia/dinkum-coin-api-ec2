@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="result-xray.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Nuke.Common" Version="0.1.454" />
+    <PackageReference Include="Nuke.Core" Version="0.1.454" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="jira\NormaliseNunitPropertiesForXRay.xslt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="resources\" />
+  </ItemGroup>
+</Project>

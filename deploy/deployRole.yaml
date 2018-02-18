@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "IAM Role to deploy DinkumCoin API"
+Outputs:
+  RoleArn:
+    Value: !GetAtt "DeployRole.Arn"
+Parameters:
+  EnvironmentName:
+    Description: "The environment name"
+    Type: "String"
+  AllowedRoleArns:
+    Description: "List of IAM roles allowed to assume the Deploy role"
+    Type: "CommaDelimitedList"
+
+Resources:
+  DeployRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: !Sub "DinkumCoin-${EnvironmentName}-DeployRole"
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: "sts:AssumeRole"
+            Effect: "Allow"
+            Principal:
+              AWS: !Ref "AllowedRoleArns"
+        Version: "2012-10-17"
+      Policies:
+        - PolicyName: "Deploy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Action:
+                  - "cloudformation:DescribeStacks"
+                  - "cloudwatch:PutMetricAlarm"
+                  - "iam:GetRole"
+                  - "logs:DescribeLogGroups"
+                  - "route53:ChangeResourceRecordSets"
+                  - "route53:GetChange"
+                  - "route53:ListHostedZones"
+                Effect: "Allow"
+                Resource: "*"
+             
+              - Action:
+                  - "cloudformation:CreateStack"
+                  - "cloudformation:UpdateStack"
+                Effect: "Allow"
+                Resource: !Sub "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/DinkumCoin-${EnvironmentName}-*"
+              
+              - Action:
+                  - "iam:CreateRole"
+                  - "iam:PassRole"
+                  - "iam:PutRolePolicy"
+                Effect: "Allow"
+                Resource: !Sub "arn:aws:iam::${AWS::AccountId}:role/DinkumCoin-${EnvironmentName}-*"
+              
+              - Action:
+                  - "iam:PutRolePolicy"
+                  - "iam:UpdateAssumeRolePolicy"
+                Effect: "Allow"
+                Resource: !Sub "arn:aws:iam::${AWS::AccountId}:role/DinkumCoin-${EnvironmentName}-DeployRole"
+
+              - Action:
+                  - "dynamodb:CreateTable"
+                Effect: "Allow"
+                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table:*"              
+
+              - Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:PutRetentionPolicy"
+                  - "logs:PutSubscriptionFilter"
+                Effect: "Allow"
+                Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:DinkumCoin-${EnvironmentName}/*:log-stream:"
+
+              - Action:
+                  - "lambda:*"
+                Effect: "Allow"
+                Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:*"
+              
+              
+              - Action:
+                  - "apigateway:*"
+                Effect: "Allow"
+                Resource: !Sub "arn:aws:apigateway:${AWS::Region}:${AWS::AccountId}:/restapis/*"    
