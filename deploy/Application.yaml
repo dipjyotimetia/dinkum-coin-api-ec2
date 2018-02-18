@@ -1,8 +1,8 @@
 ﻿AWSTemplateFormatVersion: "2010-09-09"
-Description: "Application stack for the Points Service"
+Description: "Application stack for the Dinkum Coin API"
 Outputs:
   LoadBalancerUrl:
-    Value: !Sub "http://pointsservice.${EnvironmentShortName}.${HostedZoneName}"
+    Value: !Sub "http://dinkumcoin.${EnvironmentShortName}.${HostedZoneName}"
   LoadBalancerDNS:
     Value: !GetAtt "LoadBalancer.DNSName"
   AsgArn: 
@@ -13,39 +13,9 @@ Outputs:
   Version:
     Value: !Ref "VersionToDeploy"
 Parameters:
-  NewRelicKey:
-    Description: "New Relic Key"
-    Type: "String"
   AmiId:
     Description: "Machine image ID"
     Type: "AWS::EC2::Image::Id"
-  DefaultProvider:
-    Description: "Default Provider"
-    Type: "String"
-  CrownServiceUrl:
-    Description: "Crown Microservice Url"
-    Type: "String"
-  Cc2RewardsRedisServer:
-    Description: "Redis Server CC2 Rewards Cache"
-    Type: "String"
-  Cc2ProvisionalPointsCacheSeconds:
-    Description: "CC2 Cache duration for Provisional members"
-    Type: "String"
-  Cc2FullPointsCacheSeconds:
-    Description: "CC2 Cache duration for Full members"
-    Type: "String"
-  PointsCacheDurationSeconds:
-    Description: "Caching duration of points in seconds"
-    Type: "Number"
-  TbsServerName:
-    Description: "Server name for TBS database"
-    Type: "String"
-  TbsUserName:
-    Description: "TBS Database user name for Points service"
-    Type: "String"
-  TbsPassword:
-    Description: "TBS Database password for Points service"
-    Type: "String"
   ElasticacheEndpoint:
     Description: "Redis Endpoint"
     Type: "String"
@@ -65,10 +35,10 @@ Parameters:
     Description: "IDs of security groups to apply to the EC2 instances"
     Type: "String"
   EnvironmentName:
-    Description: "Environment name of the Points Service"
+    Description: "Environment name of the Dinkum Coin API"
     Type: "String"
   EnvironmentShortName:
-    Description: "Environment name of the Points Service in lowercase"
+    Description: "Environment name of the Dinkum Coin API in lowercase"
     Type: "String"
   MinInstanceCount:
     Description: "The minimum number of instances for the ASG"
@@ -82,23 +52,20 @@ Parameters:
   KeyPairName:
     Description: "Name of EC2 key pair for logging in to the instances"
     Type: "String"
-  LogLambdaArn:
-    Description: "The ARN of the Lambda function to use with CloudWatch Log subscriptions"
-    Type: "String"
   S3BucketName:
-    Description: "S3 Bucket Name containing the Points Service"
+    Description: "S3 Bucket Name containing the Dinkum Coin API"
     Type: "String"
   SubnetIds:
     Description: "Subnets to associate with the ASG"
     Type: "List<AWS::EC2::Subnet::Id>"
   VersionToDeploy:
-    Description: "Version of the Points Service to deploy"
+    Description: "Version of the Dinkum Coin API to deploy"
     Type: "String"
   VpcCidr:
     Description: "VPC CIDR"
     Type: "String"
   VpcId:
-    Description: "ID of the VPC in which the Points Service is located"
+    Description: "ID of the VPC in which the Dinkum Coin API is located"
     Type: "AWS::EC2::VPC::Id"
   KmsKeyArn:
     Description: "The ARN of the KMS key for decrypting secure parameters"
@@ -108,7 +75,7 @@ Resources:
     Properties:
       HostedZoneName: !Sub "${HostedZoneName}."
       RecordSets:
-        - Name: !Sub "pointsservice.${EnvironmentShortName}.${HostedZoneName}."
+        - Name: !Sub "dinkumcoin.${EnvironmentShortName}.${HostedZoneName}."
           Type: "A"
           AliasTarget:
             HostedZoneId: !GetAtt [ "LoadBalancer", "CanonicalHostedZoneID" ]
@@ -140,9 +107,9 @@ Resources:
       Subnets: !Ref "SubnetIds"
       Tags:
         - Key: "Platform"
-          Value: "Points Service"
+          Value: "Dinkum Coin API"
         - Key: "Department"
-          Value: "Ignite"
+          Value: "QA"
         - Key: "environment"
           Value: !Ref "EnvironmentName"
     Type: "AWS::ElasticLoadBalancingV2::LoadBalancer"
@@ -160,9 +127,9 @@ Resources:
       Protocol: "HTTP"
       Tags:
         - Key: "Platform"
-          Value: "Points Service"
+          Value: "Dinkum Coin API"
         - Key: "Department"
-          Value: "Ignite"
+          Value: "QA"
         - Key: "environment"
           Value: !Ref "EnvironmentName"
       TargetGroupAttributes:
