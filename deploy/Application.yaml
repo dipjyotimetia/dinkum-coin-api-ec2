@@ -16,12 +16,6 @@ Parameters:
   AmiId:
     Description: "Machine image ID"
     Type: "AWS::EC2::Image::Id"
-  ElasticacheEndpoint:
-    Description: "Redis Endpoint"
-    Type: "String"
-  ElasticacheClientSecurityGroup:
-    Description: "Security Group for Accessing Redis Server"
-    Type: "String"
   AlbSecurityGroupIds:
     Description: "IDs of security groups to allow Inbound traffic to ALB"
     Type: "String"
@@ -52,6 +46,9 @@ Parameters:
   KeyPairName:
     Description: "Name of EC2 key pair for logging in to the instances"
     Type: "String"
+  LogLambdaArn:
+    Description: "The ARN of the Lambda function to use with CloudWatch Log subscriptions"
+    Type: "String"
   S3BucketName:
     Description: "S3 Bucket Name containing the Dinkum Coin API"
     Type: "String"
@@ -67,9 +64,6 @@ Parameters:
   VpcId:
     Description: "ID of the VPC in which the Dinkum Coin API is located"
     Type: "AWS::EC2::VPC::Id"
-  KmsKeyArn:
-    Description: "The ARN of the KMS key for decrypting secure parameters"
-    Type: "String"
 Resources:
   Dns:
     Properties:
@@ -195,13 +189,9 @@ Resources:
               - ssm:GetParameter
               - ssm:GetParameters
             Effect: "Allow"
-            Resource: !Sub "arn:aws:ssm:*:*:parameter/PointsService/${EnvironmentName}/*"
-          - Action:
-              - kms:Decrypt
-            Effect: "Allow"
-            Resource: !Ref "KmsKeyArn"
+            Resource: !Sub "arn:aws:ssm:*:*:parameter/DinkumCoinApi/${EnvironmentName}/*"
         Version: "2012-10-17"
-      PolicyName: "PointsService"
+      PolicyName: "DinkumCoinApi"
       Roles:
         - !Ref "InstanceRole"
     Type: "AWS::IAM::Policy"    
@@ -218,7 +208,7 @@ Resources:
       Tags:
         - Key: "Name"
           PropagateAtLaunch: true
-          Value: !Sub "PointsService-${EnvironmentName}"
+          Value: !Sub "DinkumCoin-${EnvironmentName}"
         - Key: "bp-snapshot-policy"
           PropagateAtLaunch: true
           Value: "never"
@@ -316,7 +306,7 @@ Resources:
       ImageId: !Ref "AmiId"
       InstanceType: !Sub "${InstanceType}"
       KeyName: !Ref "KeyPairName"
-      SecurityGroups: !Split [ ",", !Join [ ",", [ !Ref "Ec2SecurityGroupIds", !Ref "Ec2SecurityGroup", !Ref "ElasticacheClientSecurityGroup" ] ] ]
+      SecurityGroups: !Split [ ",", !Join [ ",", [ !Ref "Ec2SecurityGroupIds", !Ref "Ec2SecurityGroup"] ] ]
       UserData:
         Fn::Base64:
           !Sub |
@@ -326,59 +316,27 @@ Resources:
             (
                 set -e
                 /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource AutoScalingGroup --region ${AWS::Region}
-                
-                sudo wget -L http://download.newrelic.com/dot_net_agent/core_20/current/newrelic-netcore20-agent_7.0.2.0_amd64.tar.gz
-                sudo tar xzf newrelic-netcore20-agent_7.0.2.0_amd64.tar.gz
-                sudo mv -v newrelic-netcore20-agent /usr/local
-
-                sudo rpm -Uvh https://download.newrelic.com/pub/newrelic/el5/i386/newrelic-repo-5-3.noarch.rpm
-                sudo yum -y install newrelic-sysmond
-                sudo nrsysmond-config --set license_key=${NewRelicKey}
-                sudo /etc/init.d/newrelic-sysmond start
 
                 cd /opt
-                aws s3 cp s3://${S3BucketName}/${VersionToDeploy}/PointsService_${VersionToDeploy}.zip .
-                unzip PointsService_${VersionToDeploy}.zip -d PointsService
+                aws s3 cp s3://${S3BucketName}/${VersionToDeploy}/DinkumCoin.Api_${VersionToDeploy}.zip .
+                unzip DinkumCoin.Api_${VersionToDeploy}.zip -d DinkumCoin.Api
                 
-                echo "CORECLR_ENABLE_PROFILING=1" >> /etc/environment
-                echo "CORECLR_PROFILER={36032161-FFC0-4B61-B559-F6C5D41BAE5A}" >> /etc/environment
-                echo "CORECLR_NEWRELIC_HOME=\"/usr/local/newrelic-netcore20-agent\"" >> /etc/environment
-                echo "CORECLR_PROFILER_PATH=\"/usr/local/newrelic-netcore20-agent/libNewRelicProfiler.so\"" >> /etc/environment
-                echo "NEW_RELIC_LICENSE_KEY=\"${NewRelicKey}\"" >> /etc/environment
-                echo "NEW_RELIC_APP_NAME=\"${EnvironmentName}.PointsService\"" >> /etc/environment
-                
-                echo "PointsService_Environment=\"${EnvironmentName}\"" >> /etc/environment
-                
-                echo "PointsService_DefaultProvider=\"${DefaultProvider}\"" >> /etc/environment
-                echo "PointsService_ServiceProviderParameterStore=\"/PointsService/${EnvironmentName}/ServiceProvider\"" >> /etc/environment
-                
-                echo "PointsService_RedisConnectionString=\"${ElasticacheEndpoint}\"" >> /etc/environment
-                echo "PointsService_PointsCacheDurationSeconds=\"${PointsCacheDurationSeconds}\"" >> /etc/environment
-                
-                echo "PointsService_CrownServiceUrl=\"${CrownServiceUrl}\"" >> /etc/environment                
-                 echo "PointsService_Cc2RewardsRedisServer=\"${Cc2RewardsRedisServer}\"" >> /etc/environment                
-                echo "PointsService_Cc2ProvisionalPointsCacheSeconds=\"${Cc2ProvisionalPointsCacheSeconds}\"" >> /etc/environment                
-                echo "PointsService_Cc2FullPointsCacheSeconds=\"${Cc2FullPointsCacheSeconds}\"" >> /etc/environment
-                
-                echo "PointsService_TBSConnectionString=\"Data Source=${TbsServerName};Initial Catalog=TBS;Persist Security Info=True;user=${TbsUserName};Password=${TbsPassword}\"" >> /etc/environment
-                echo "PointsService_TBSAdminConnectionString=\"Data Source=${TbsServerName};Initial Catalog=TBSAdmin;Persist Security Info=True;user=${TbsUserName};Password=${TbsPassword}\"" >> /etc/environment
+                echo "DinkumCoin.Api_Environment=\"${EnvironmentName}\"" >> /etc/environment
                 
                 echo "ASPNETCORE_Environment=\"${EnvironmentName}\"" >> /etc/environment
                 
                 set -o allexport; source /etc/environment; set +o allexport
 
-                cd ./PointsService
-                chmod +x ./PointsService
-                ./PointsService <&- &
+                cd ./DinkumCoin.Api
+                chmod +x ./DinkumCoin.Api
+                ./DinkumCoin.Api <&- &
 
-                health=$(wget -q -O - --retry-connrefused -T 120 http://localhost:5000/api/values)
-                [ "$(echo $health | jq '.ExtendedCheck.Status')" = "\"Success\"" ]
             )
-            /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource AutoScalingGroup --region ${AWS::Region}
+            /opt/aws/bin/cfn-signal -s true --stack ${AWS::StackName} --resource AutoScalingGroup --region ${AWS::Region}
     Type: "AWS::AutoScaling::LaunchConfiguration"
   AppLogGroup:
     Properties:
-      LogGroupName: !Sub "Points-Service-${EnvironmentName}/applog"
+      LogGroupName: !Sub "DinkumCoin-Api-${EnvironmentName}/applog"
       RetentionInDays: 365
     Type: "AWS::Logs::LogGroup"
   AppLogGroupInvokeLambdaPermission:
@@ -397,7 +355,7 @@ Resources:
     Type: "AWS::Logs::SubscriptionFilter"
   SyslogLogGroup:
     Properties:
-      LogGroupName: !Sub "Points-Service-${EnvironmentName}/syslog"
+      LogGroupName: !Sub "DinkumCoin-Api-${EnvironmentName}/syslog"
       RetentionInDays: 365
     Type: "AWS::Logs::LogGroup"
   SysLogGroupInvokeLambdaPermission:

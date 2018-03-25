@@ -27,7 +27,6 @@ namespace DinkumCoin.Api
                 .AddMvcServices();
             services.AddTransient<IMathService, MathService>();
             services.AddTransient<IMiningService, MiningService>();
-          // .AddTransient<IDinkumRepository, InMemoryRepository>();
             services.TryAddSingleton<IDinkumRepository, InMemoryRepository>();
 
             services.AddSwaggerGen(c =>
