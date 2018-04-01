@@ -23,6 +23,14 @@ namespace DinkumCoin.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            })
             .AddOptions()
                 .AddMvcServices();
             services.AddTransient<IMathService, MathService>();
@@ -37,7 +45,7 @@ namespace DinkumCoin.Api
 
         public void Configure(IApplicationBuilder app, ILogger<Startup> logger)
         {
-
+            app.UseCors("CorsPolicy");
             app.UseMvcServices();
             app.UseSwagger();
             app.UseSwaggerUI(c =>

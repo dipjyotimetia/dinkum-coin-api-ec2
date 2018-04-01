@@ -69,7 +69,7 @@ Resources:
     Properties:
       HostedZoneName: !Sub "${HostedZoneName}."
       RecordSets:
-        - Name: !Sub "dinkumcoin.${EnvironmentShortName}.${HostedZoneName}."
+        - Name: !Sub "dinkumcoin.${HostedZoneName}."
           Type: "A"
           AliasTarget:
             HostedZoneId: !GetAtt [ "LoadBalancer", "CanonicalHostedZoneID" ]
@@ -96,7 +96,7 @@ Resources:
     Type: "AWS::ElasticLoadBalancingV2::Listener"
   LoadBalancer:
     Properties:
-      Scheme: "internal"
+      Scheme: "internet-facing"
       SecurityGroups: !Split [ ",", !Join [ ",", [ !Ref "AlbSecurityGroupIds", !Ref "LoadBalancerSecurityGroup" ] ] ]
       Subnets: !Ref "SubnetIds"
       Tags:
@@ -321,7 +321,7 @@ Resources:
                 aws s3 cp s3://${S3BucketName}/${VersionToDeploy}/DinkumCoin.Api_${VersionToDeploy}.zip .
                 unzip DinkumCoin.Api_${VersionToDeploy}.zip -d DinkumCoin.Api
                 
-                echo "DinkumCoin.Api_Environment=\"${EnvironmentName}\"" >> /etc/environment
+                echo "DinkumCoinApi_Environment=\"${EnvironmentName}\"" >> /etc/environment
                 
                 echo "ASPNETCORE_Environment=\"${EnvironmentName}\"" >> /etc/environment
                 

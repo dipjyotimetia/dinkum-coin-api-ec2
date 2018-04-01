@@ -119,9 +119,6 @@ namespace Build.Targets
 
         private void UpsertStack(string stackName, string templatePath, List<Parameter> parameters, List<Tag> tags, bool notification = false)
         {
-            Console.WriteLine($"hello");
-
-
             var settings = new StackSettings
             {
                 NotificationArns = new List<string>()

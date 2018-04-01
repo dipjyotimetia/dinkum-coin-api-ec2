@@ -103,8 +103,9 @@ namespace DinkumCoin.Api.Controllers
                 else
                 {
                     logLine += $"mine attempt failed";
+                    var wallet = await _dinkumRepo.GetWallet(new Guid(walletId));
 
-                    var response = Ok("Mining Attempt unsuccesful");
+                    var response = Ok(wallet);
                     return response;
                 }
             }

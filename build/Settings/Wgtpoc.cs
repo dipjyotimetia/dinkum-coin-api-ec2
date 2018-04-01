@@ -8,14 +8,15 @@
 
             AlbSecurityGroupIds = "sg-15439b72";
             Ec2SecurityGroupIds = "sg-15439b72,sg-0b9b1872";
-            Application.KeyPairName = "wgtpoc";
+            Application.KeyPairName = "Stu-P-key";
 
             InstanceType = "t2.nano";
             DesiredInstanceCount = 1;
             MinInstanceCount = 1;
             MaxInstanceCount = 1;
-            SubnetIds = "subnet-d4a4d5b0,subnet-07ac3771,subnet-e256ebbb";
-            VpcCidr = "10.126.0.0/16";
+            SubnetIds = "subnet-ffb41aa6,subnet-0c46ca7a,subnet-dd91f4b9";
+           // VpcCidr = "10.126.0.0/16";
+            VpcCidr = "0.0.0.0/0";
             VpcId = "vpc-17c41d73";
             LogLambdaArn = "arn:aws:lambda:ap-southeast-2:250658028269:function:CloudwatchLogsSumoTransferFunction-poc";
         }

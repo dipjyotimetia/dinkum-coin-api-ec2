@@ -1,0 +1,29 @@
+﻿<Properties StartupConfiguration="{972F0628-735E-4E76-B57C-58AD52A3DAB8}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="build/Targets/Deploy.cs">
+    <Files>
+      <File FileName="build/Targets/Build.cs" Line="74" Column="29" />
+      <File FileName="build/Targets/Deploy.cs" Line="122" Column="13" />
+      <File FileName="src/DinkumCoin.Api/Mvc/ApplicationBuilderExtensions.cs" Line="1" Column="1" />
+      <File FileName="src/DinkumCoin.Api/Mvc/ExceptionFilter.cs" Line="1" Column="1" />
+      <File FileName="src/DinkumCoin.Api/Mvc/ServiceCollectionExtensions.cs" Line="1" Column="1" />
+      <File FileName="src/DinkumCoin.Api/Controllers/WalletsController.cs" Line="84" Column="1" />
+      <File FileName="src/DinkumCoin.Api/Program.cs" Line="1" Column="1" />
+      <File FileName="src/DinkumCoin.Api/Startup.cs" Line="29" Column="56" />
+      <File FileName="build/Settings/StackName.cs" Line="19" Column="46" />
+      <File FileName="src/DinkumCoin.Api/Controllers/ValuesController.cs" Line="27" Column="15" />
+      <File FileName="build/Settings/GatlingSettings.cs" Line="18" Column="1" />
+      <File FileName="build/Build.csproj" Line="1" Column="1" />
+      <File FileName="build/Settings/Wgtpoc.cs" Line="20" Column="13" />
+      <File FileName="build/Settings/EnvironmentSettings.cs" Line="1" Column="1" />
+      <File FileName="build/Settings/GlobalSettings.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.src.DinkumCoin.Api PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.build.Build PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>
