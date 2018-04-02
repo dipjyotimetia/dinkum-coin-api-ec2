@@ -9,6 +9,7 @@ TestResults/
 buildOutput/
 TestResults.xml
 logs/
+.vs/
 
 # globs
 Makefile.in
