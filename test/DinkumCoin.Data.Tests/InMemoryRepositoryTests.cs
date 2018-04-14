@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using DinkumCoin.Core.Models;
 using DinkumCoin.Data.Repositories;
 using Xunit;
@@ -20,14 +21,14 @@ namespace DinkumCoin.Data.Tests
 
 
         [Fact]
-        public void AddWalletTest()
+        public async void AddWalletTest()
         {
             // Arrange
             var repo = new InMemoryRepository();
             var myNewWallet = new Wallet() { Id = Guid.NewGuid(), WalletName = "Test Wallet-"+Guid.NewGuid(), CreationDate = DateTime.Now };
 
             // Act
-            var repoResult = repo.CreateWallet(myNewWallet).Result;
+            var repoResult = await repo.CreateWallet(myNewWallet);
 
             // Assert 
             Assert.NotNull(repoResult);
@@ -35,13 +36,13 @@ namespace DinkumCoin.Data.Tests
         }
 
         [Fact]
-        public void GetAllWalletsTest()
+        public async void GetAllWalletsTest()
         {
             // Arrange
             var repo = new InMemoryRepository();
 
             // Act
-            var repoResult = repo.GetAllWallets().Result;
+            var repoResult = await repo.GetAllWallets();
 
             // Assert
             Assert.NotEmpty(repoResult);
@@ -49,7 +50,7 @@ namespace DinkumCoin.Data.Tests
         }
 
         [Fact]
-        public void GetSpecificWalletTest()
+        public async void GetSpecificWalletTest()
         {
             // Arrange
             var repo = new InMemoryRepository();
@@ -57,7 +58,7 @@ namespace DinkumCoin.Data.Tests
             var walletId = new Guid("dd9fbf9b-a500-4c00-b00d-069ea4080004");
 
             // Act
-            var repoResult = repo.GetWallet(walletId).Result;
+            var repoResult = await repo.GetWallet(walletId);
 
             // Assert 
             Assert.Equal(walletId, repoResult.Id);
@@ -66,7 +67,7 @@ namespace DinkumCoin.Data.Tests
 
 
         [Fact]
-        public void AddCoinToWalletTest()
+        public async void AddCoinToWalletTest()
         {
             // Arrange
             var repo = new InMemoryRepository();
@@ -74,7 +75,7 @@ namespace DinkumCoin.Data.Tests
             var walletId = new Guid("dd9fbf9b-a500-4c00-b00d-069ea4080004");
             var coin = new Coin() { Id = Guid.NewGuid(), CreationDate = DateTime.Now };
             // Act
-            var updateResult = repo.AddCoinToWallet(walletId, coin).Result;
+            var updateResult = await repo.AddCoinToWallet(walletId, coin);
 
             // Assert 
             Assert.NotNull(updateResult);
