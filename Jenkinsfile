@@ -32,6 +32,15 @@ pipeline {
 				stash name: "solution", useDefaultExcludes: false
  			}
 		}
+		stage("Package / Upload")  {
+		steps {
+				deleteDir()
+				unstash "solution"
+				buildTarget "Package", "-NoDeps"
+				buildTarget "Upload", "-NoDeps"
+				stash name: "solution", useDefaultExcludes: false
+ 			}
+		}		
 	}
 	post {
 		always {
