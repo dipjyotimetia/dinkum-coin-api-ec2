@@ -79,7 +79,7 @@ namespace Build.Targets
 
         public Target Package => _ => _
              .Description("Package the application")
-             .DependsOn(Test)
+            .DependsOn(Unit_Test)
              .Executes(() =>
              {
                  ProcessTasks.StartProcess(
