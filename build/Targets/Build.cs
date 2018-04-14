@@ -41,7 +41,7 @@ namespace Build.Targets
              .Description("Build all projects in the solution")
              .Executes(() => DotNetBuild(SolutionDirectory));
 
-        public Target Test => _ => _
+        public Target Unit_Test => _ => _
              .Description("Perform all unit tests")
              .DependsOn(Compile)
              .Executes(() =>

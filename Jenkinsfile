@@ -16,11 +16,19 @@ pipeline {
     			stash name: "solution", useDefaultExcludes: false
 			}
 		}				
-		stage("Unit test")  {
+		stage("Unit Test")  {
 		steps {
 				deleteDir()
 				unstash "solution"
-				buildTarget "UnitTest", "-NoDeps"
+				buildTarget "Unit_Test", "-NoDeps"
+				stash name: "solution", useDefaultExcludes: false
+ 			}
+		}
+		stage("Verify Pacts")  {
+		steps {
+				deleteDir()
+				unstash "solution"
+				buildTarget "Verify_Pacts", "-NoDeps"
 				stash name: "solution", useDefaultExcludes: false
  			}
 		}
