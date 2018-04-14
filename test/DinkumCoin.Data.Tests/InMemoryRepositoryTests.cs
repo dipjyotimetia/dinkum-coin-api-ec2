@@ -21,7 +21,7 @@ namespace DinkumCoin.Data.Tests
 
 
         [Fact]
-        public async void AddWalletTest()
+        public async Task AddWalletTest()
         {
             // Arrange
             var repo = new InMemoryRepository();
@@ -36,7 +36,7 @@ namespace DinkumCoin.Data.Tests
         }
 
         [Fact]
-        public async void GetAllWalletsTest()
+        public async Task GetAllWalletsTest()
         {
             // Arrange
             var repo = new InMemoryRepository();
@@ -50,7 +50,7 @@ namespace DinkumCoin.Data.Tests
         }
 
         [Fact]
-        public async void GetSpecificWalletTest()
+        public async Task GetSpecificWalletTest()
         {
             // Arrange
             var repo = new InMemoryRepository();
@@ -67,7 +67,7 @@ namespace DinkumCoin.Data.Tests
 
 
         [Fact]
-        public async void AddCoinToWalletTest()
+        public async Task AddCoinToWalletTest()
         {
             // Arrange
             var repo = new InMemoryRepository();
