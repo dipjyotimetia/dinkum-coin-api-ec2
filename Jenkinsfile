@@ -1,3 +1,5 @@
+def buildVersion = ''
+
 pipeline {
 	agent  { label 'dotnetcore' } 	
 	//agent any
@@ -11,6 +13,8 @@ pipeline {
 				buildTarget "Export_Build_Version", "-BuildVersionFilePath \"${env.WORKSPACE}/version.txt\""
 				script {
 					currentBuild.displayName = readFile "${env.WORKSPACE}/version.txt"
+					echo "reading build version"
+                    buildVersion = readFile "${env.WORKSPACE}/version.txt"
 				}
 				buildTarget "Compile", "-NoDeps"
     			stash name: "solution", useDefaultExcludes: false
@@ -38,6 +42,14 @@ pipeline {
 				unstash "solution"
 				buildTarget "Package", "-NoDeps"
 				buildTarget "Upload", "-NoDeps"
+				stash name: "solution", useDefaultExcludes: false
+ 			}
+		}	
+		stage("Deploy DEV")  {
+		steps {
+				deleteDir()
+				unstash "solution"
+				buildTarget "Deploy", "-Account \"wgtpoc\" -Environment \"DEV\" -VersionToDeploy \"${buildVersion}\""
 				stash name: "solution", useDefaultExcludes: false
  			}
 		}		
