@@ -7,9 +7,18 @@ pipeline {
 		DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "1"
 		DOTNET_CLI_TELEMETRY_OPTOUT = "1"
 	}
+
+	options { 
+		skipDefaultCheckout() 
+		buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+		}
+
 	stages {
 		stage("Build") {
 			steps {
+				deleteDir()
+                checkout scm
+
 				buildTarget "Export_Build_Version", "-BuildVersionFilePath \"${env.WORKSPACE}/version.txt\""
 				script {
 					currentBuild.displayName = readFile "${env.WORKSPACE}/version.txt"
