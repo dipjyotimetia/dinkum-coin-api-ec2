@@ -1,7 +1,7 @@
 def buildVersion = ''
 
 pipeline {
-	agent  { label 'dotnetcore' } 	
+	agent{ dockerfile true}
 	//agent any
 	environment {
 		DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "1"
@@ -9,14 +9,14 @@ pipeline {
 	}
 
 	options { 
-		skipDefaultCheckout() 
+		//skipDefaultCheckout() 
 		buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
 		}
 
 	stages {
 		stage("Build") {
 			steps {
-				deleteDir()
+				//deleteDir()
                 checkout scm
 
 				buildTarget "Export_Build_Version", "-BuildVersionFilePath \"${env.WORKSPACE}/version.txt\""
@@ -31,42 +31,42 @@ pipeline {
 		}				
 		stage("Unit Test")  {
 		steps {
-				deleteDir()
+		//		deleteDir()
 				unstash "solution"
 				buildTarget "Unit_Test", "-NoDeps"
-				stash name: "solution", useDefaultExcludes: false
+		//		stash name: "solution", useDefaultExcludes: false
  			}
 		}
 		stage("Verify Pacts")  {
 		steps {
-				deleteDir()
-				unstash "solution"
+		//		deleteDir()
+		//		unstash "solution"
 				buildTarget "Verify_Pacts", "-NoDeps"
-				stash name: "solution", useDefaultExcludes: false
+		//		stash name: "solution", useDefaultExcludes: false
  			}
 		}
 		stage("Package / Upload")  {
 		steps {
-				deleteDir()
-				unstash "solution"
+		//		deleteDir()
+		//		unstash "solution"
 				buildTarget "Package", "-NoDeps"
 				buildTarget "Upload", "-NoDeps"
-				stash name: "solution", useDefaultExcludes: false
+		//		stash name: "solution", useDefaultExcludes: false
  			}
 		}	
 		stage("Deploy DEV")  {
 		steps {
-				deleteDir()
-				unstash "solution"
+		//		deleteDir()
+		//		unstash "solution"
 				buildTarget "Deploy", "-Account \"wgtpoc\" -Environment \"DEV\" -VersionToDeploy \"${buildVersion}\""
-				stash name: "solution", useDefaultExcludes: false
+		//		stash name: "solution", useDefaultExcludes: false
  			}
 		}		
 	}
 	post {
 		always {
-			deleteDir()
-			unstash "solution" 
+		//	deleteDir()
+		//	unstash "solution" 
 			step([$class: 'XUnitBuilder',
 				thresholds: [[$class: 'FailedThreshold', unstableThreshold: '1']],
 				tools: [[ $class: 'XUnitDotNetTestType', pattern: '**/TestResults.xml']]]
