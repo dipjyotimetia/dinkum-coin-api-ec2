@@ -1,6 +1,6 @@
 ﻿using Amazon.SecurityToken.Model;
 using Build.Settings;
-using CrownBet.Build.Aws;
+using Build.Aws;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Core;
 using Nuke.Core.Tooling;

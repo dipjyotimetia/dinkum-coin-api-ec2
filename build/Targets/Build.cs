@@ -1,6 +1,6 @@
 ﻿using Build.Settings;
-using CrownBet.Build;
-using CrownBet.Build.Aws;
+using Build;
+using Build.Aws;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Core;
 using Nuke.Core.IO;
