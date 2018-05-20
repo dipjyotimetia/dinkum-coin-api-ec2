@@ -20,6 +20,7 @@
     <PackageReference Include="AWSSDK.SimpleSystemsManagement" Version="3.3.17.2" />
     <PackageReference Include="LibGit2Sharp" Version="0.25.0" />
 
+    <PackageReference Include="LibGit2Sharp.NativeBinaries" Version="1.0.210" />
     </ItemGroup>
 
   <ItemGroup>
