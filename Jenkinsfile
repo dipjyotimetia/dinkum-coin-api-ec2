@@ -25,7 +25,7 @@ pipeline {
 					echo "reading build version"
                     buildVersion = readFile "${env.WORKSPACE}/version.txt"
 				}
-				buildTarget "Compile", "-NoDeps"
+				buildTarget "Compile"
     			stash name: "solution", useDefaultExcludes: false
 			}
 		}				
