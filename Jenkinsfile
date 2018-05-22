@@ -32,7 +32,7 @@ pipeline {
 		stage("Unit Test")  {
 		steps {
 		//		deleteDir()
-				unstash "solution"
+		//		unstash "solution"
 				buildTarget "Unit_Test", "-NoDeps"
 		//		stash name: "solution", useDefaultExcludes: false
  			}
