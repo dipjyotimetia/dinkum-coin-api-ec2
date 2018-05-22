@@ -58,7 +58,7 @@ pipeline {
 		steps {
 		//		deleteDir()
 		//		unstash "solution"
-				buildTarget "Deploy", "-Account \"wgtpoc\" -Environment \"DEV\" -VersionToDeploy \"${buildVersion}\""
+				buildTarget "Deploy", "-Account \"wgtpoc\" -Environment \"dev\" -VersionToDeploy \"${buildVersion}\""
 		//		stash name: "solution", useDefaultExcludes: false
  			}
 		}		
