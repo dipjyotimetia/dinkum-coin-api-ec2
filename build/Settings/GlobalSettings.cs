@@ -3,12 +3,12 @@
 namespace Build.Settings
 {
     public class GlobalSettings
-    {
+    { 
         public const string AmiId = "ami-ad5ba9cf";
         public const string ApplicationName = "Dinkum Coin API";
         public const string BucketName = "dinkum-coin-api-packages-dev";
         public const string BucketWriteRoleArn = "arn:aws:iam::" + WgtpocAccountId + ":role/DinkumCoinApi-WriteBucketRole";
-        public const string JenkinsRoleArn = "arn:aws:iam::" + WgtpocAccountId + ":role/jenkins-ci";
+        public const string JenkinsRoleArn = "arn:aws:iam::" + WgtpocAccountId + ":role/qa-jenkins-role";
 
         public const string WgtdevAccountId = "886153924892";
         public const string WgtpocAccountId = "250658028269";
