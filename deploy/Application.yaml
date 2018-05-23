@@ -325,6 +325,9 @@ Resources:
                 chmod +x ./DinkumCoin.Api
                 ./DinkumCoin.Api <&- &
 
+                health=$(wget -q -O - --retry-connrefused -T 120 http://localhost:5000/api/values)
+                [ "$(echo $health | jq '.ExtendedCheck.Status')" = "\"Success\"" ]
+
             )
             /opt/aws/bin/cfn-signal -s true --stack ${AWS::StackName} --resource AutoScalingGroup --region ${AWS::Region}
     Type: "AWS::AutoScaling::LaunchConfiguration"
