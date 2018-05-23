@@ -321,12 +321,6 @@ Resources:
                 aws s3 cp s3://${S3BucketName}/${VersionToDeploy}/DinkumCoin.Api_${VersionToDeploy}.zip .
                 unzip DinkumCoin.Api_${VersionToDeploy}.zip -d DinkumCoin.Api
                 
-                echo "DinkumCoinApi_Environment=\"${EnvironmentName}\"" >> /etc/environment
-                
-                echo "ASPNETCORE_Environment=\"${EnvironmentName}\"" >> /etc/environment
-                
-                set -o allexport; source /etc/environment; set +o allexport
-
                 cd ./DinkumCoin.Api
                 chmod +x ./DinkumCoin.Api
                 ./DinkumCoin.Api <&- &
