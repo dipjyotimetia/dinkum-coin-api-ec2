@@ -68,7 +68,7 @@ Resources:
                   - "logs:PutRetentionPolicy"
                   - "logs:PutSubscriptionFilter"
                 Effect: "Allow"
-                Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:DinkumCoin-${EnvironmentName}/*:log-stream:"
+                Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:DinkumCoin-Api-${EnvironmentName}/*:log-stream:"
 
               - Action:
                   - "lambda:*"
@@ -79,4 +79,45 @@ Resources:
               - Action:
                   - "apigateway:*"
                 Effect: "Allow"
-                Resource: !Sub "arn:aws:apigateway:${AWS::Region}:${AWS::AccountId}:/restapis/*"    
+                Resource: !Sub "arn:aws:apigateway:${AWS::Region}:${AWS::AccountId}:/restapis/*"
+
+              - Action:
+                  - "autoscaling:CreateLaunchConfiguration"
+                  - "autoscaling:Create*"
+                  - "autoscaling:PutScalingPolicy"
+                  - "autoscaling:SetDesiredCapacity"
+                  - "autoscaling:TerminateInstanceInAutoScalingGroup"
+                  - "autoscaling:UpdateAutoScalingGroup"
+                  - "autoscaling:Delete*"
+                  - "autoscaling:DisableMetricsCollection"
+                Effect: "Allow"
+                Resource: 
+                    - !Sub "arn:aws:autoscaling:${AWS::Region}:${AWS::AccountId}:autoScalingGroup:*:autoScalingGroupName/DinkumCoin*"
+                    - !Sub "arn:aws:autoscaling:${AWS::Region}:${AWS::AccountId}:launchConfiguration:*:launchConfigurationName/DinkumCoin*" 
+
+              - Action:
+                  - "ec2:AuthorizeSecurityGroupIngress"
+                  - "ec2:Create*"
+                  - "ec2:Describe*"
+                  - "ec2:DeleteSecurityGroup*"
+                  - "ec2:RevokeSecurityGroupIngress"
+                  - "cloudformation:Describe*"
+                  - "elasticloadbalancing:SetSubnets"
+                  - "autoscaling:DeletePolicy"
+                  - "autoscaling:Describe*"
+                  - "elasticloadbalancingv2:Describe*"
+                Effect: "Allow"
+                Resource: "*"
+
+              - Action: 
+                    - "autoscaling:DeleteLaunchConfiguration"
+                    - "autoscaling:Delete*"
+                Effect: "Allow"
+                Resource:
+                    - !Sub "arn:aws:autoscaling:${AWS::Region}:${AWS::AccountId}:launchConfiguration:${AWS::AccountId}:*:DinkumCoin*"
+                
+              - Action: 
+                    - "elasticloadbalancing:CreateTargetGroup"
+                Effect: "Allow"
+                Resource:
+                    - !Sub "arn:aws:elasticloadbalancing:${AWS::Region}:${AWS::AccountId}:targetgroup/Dinku*"
