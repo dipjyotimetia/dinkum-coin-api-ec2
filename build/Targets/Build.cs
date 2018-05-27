@@ -82,6 +82,8 @@ namespace Build.Targets
              {
                  Credentials credentials = Sts.AssumeRole(GlobalSettings.BucketWriteRoleArn, "ci-build").Result;
                  S3.UploadDirectory(Settings.PackageDirectory, GlobalSettings.BucketName, GetBuildVersion(), credentials: credentials).Wait();
+                 S3.UploadDirectory(Settings.Ec2ScriptsDirectory, GlobalSettings.BucketName, $"{GetBuildVersion()}/ec2", true, credentials).Wait();
+
              });
 
         public Target Package => _ => _
