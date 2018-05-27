@@ -39,7 +39,10 @@ namespace Build.Targets
         public Target Compile => _ => _
              .DependsOn(Clean)
              .Description("Build all projects in the solution")
-             .Executes(() => DotNetBuild(SolutionDirectory));
+            .Executes(() => DotNetBuild(settings => settings
+                                        .SetConfiguration("Release")
+                                        .SetProjectFile(SolutionDirectory)
+                                       ));
 
         public Target Unit_Test => _ => _
              .Description("Perform all unit tests")
@@ -49,12 +52,14 @@ namespace Build.Targets
             DotNetTest(
                 settings => settings
                     .SetProjectFile(Settings.TestDirectory / "DinkumCoin.Data.Tests")
+                .SetConfiguration("Release")
                     .SetLogger("xunit;LogFilePath=TestResults.xml")
                     .SetNoBuild(true));
             
             DotNetTest(
         settings => settings
             .SetProjectFile(Settings.TestDirectory / "DinkumCoin.Services.Tests")
+                .SetConfiguration("Release")
             .SetLogger("xunit;LogFilePath=TestResults.xml")
             .SetNoBuild(true));
 
@@ -65,6 +70,7 @@ namespace Build.Targets
              .DependsOn(Compile)
              .Executes(() => DotNetTest(
                  settings => settings
+                .SetConfiguration("Release")
                 .SetProjectFile(Settings.TestDirectory / "DinkumCoin.Api.PactVerify")
                     .SetNoBuild(true)));
 
