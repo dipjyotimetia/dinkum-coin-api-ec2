@@ -22,6 +22,7 @@ namespace Build.Settings
             LogsDirectory = BuildOutputDirectory / "logs";
             PackageDirectory = BuildOutputDirectory / "package";
             PublishDirectory = BuildOutputDirectory / "publish";
+            Ec2ScriptsDirectory = TemplateDirectory / "ec2";
         }
 
         public AbsolutePath BuildOutputDirectory { get; }
@@ -29,6 +30,7 @@ namespace Build.Settings
         public AbsolutePath PackageDirectory { get; }
 
         public AbsolutePath PublishDirectory { get; }
+        public AbsolutePath Ec2ScriptsDirectory { get; }
 
         public AbsolutePath LogsDirectory { get; }
 
