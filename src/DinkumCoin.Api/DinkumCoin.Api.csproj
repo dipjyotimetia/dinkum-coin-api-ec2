@@ -20,6 +20,14 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.0.0" />
+
+        <PackageReference Include="App.Metrics" Version="2.1.0" />
+        <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="2.0.0" />
+        <PackageReference Include="App.Metrics.Reporting.Console" Version="2.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
+        <PackageReference Include="App.Metrics.Reporting.Graphite" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>

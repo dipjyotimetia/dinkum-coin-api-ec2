@@ -7,7 +7,7 @@ using DinkumCoin.Core.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;
-
+using App.Metrics;
 
 
 namespace DinkumCoin.Api.Controllers
@@ -19,11 +19,14 @@ namespace DinkumCoin.Api.Controllers
         private readonly IDinkumRepository _dinkumRepo;
         private readonly IMiningService _miningService;
 
-        public WalletsController(ILogger<WalletsController> logger, IDinkumRepository dinkumRepo,IMiningService miningService)
+        private readonly IMetrics _metrics;
+
+        public WalletsController(ILogger<WalletsController> logger, IDinkumRepository dinkumRepo,IMiningService miningService, IMetrics metrics)
         {
             _logger = logger;
             _dinkumRepo = dinkumRepo;
             _miningService = miningService;
+            _metrics = metrics;
         }
 
 

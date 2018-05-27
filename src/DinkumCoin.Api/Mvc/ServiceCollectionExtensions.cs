@@ -2,6 +2,9 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using App.Metrics;
+using App.Metrics.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DinkumCoin.Api.Mvc
 {
@@ -9,8 +12,10 @@ namespace DinkumCoin.Api.Mvc
     {
         public static IServiceCollection AddMvcServices(this IServiceCollection services)
         {
-            services
-                .AddMvcCore(options => options.Filters.Add(new ExceptionFilter()))
+
+            services.AddMvcCore(options => options
+                                       .Filters.Add(new ExceptionFilter())
+                                       )
                 .AddApiExplorer()
                 .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
                 .AddDataAnnotations()
@@ -19,6 +24,11 @@ namespace DinkumCoin.Api.Mvc
                     settings.NullValueHandling = NullValueHandling.Ignore;
                     settings.Converters.Add(new StringEnumConverter());
                 });
+
+            services
+                .AddMvc()
+                .AddMetrics();
+
 
             return services;
         }

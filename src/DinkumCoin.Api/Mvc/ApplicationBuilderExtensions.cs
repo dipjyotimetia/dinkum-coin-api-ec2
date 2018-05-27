@@ -7,7 +7,6 @@ namespace DinkumCoin.Api.Mvc
         public static IApplicationBuilder UseMvcServices(this IApplicationBuilder builder)
         {
             return builder
-                //  .UseMiddleware<MetricsMiddleware>()
                 .UseMvc();
         }
     }

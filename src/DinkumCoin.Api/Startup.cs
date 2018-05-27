@@ -3,6 +3,9 @@ using DinkumCoin.Core.Contracts;
 using DinkumCoin.Data.Repositories;
 using DinkumCoin.Services;
 using Microsoft.AspNetCore.Builder;
+using App.Metrics;
+using App.Metrics.AspNetCore;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;

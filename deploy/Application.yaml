@@ -317,6 +317,8 @@ Resources:
                 set -e
                 /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource AutoScalingGroup --region ${AWS::Region}
 
+                curl -s https://0cf17c88-08e5-4e24-af73-e36621e67b4b@www.hostedgraphite.com/agent/installer/rpm/ | sudo sh
+
                 cd /opt
                 aws s3 cp s3://${S3BucketName}/${VersionToDeploy}/DinkumCoin.Api_${VersionToDeploy}.zip .
                 unzip DinkumCoin.Api_${VersionToDeploy}.zip -d DinkumCoin.Api

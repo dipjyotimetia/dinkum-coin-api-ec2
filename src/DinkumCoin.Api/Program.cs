@@ -1,5 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
+using App.Metrics;
+using App.Metrics.AspNetCore;
 using DinkumCoin.Api.Configuration;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -21,7 +24,13 @@ namespace DinkumCoin.Api
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseUrls("http://*:5000")
                 .UseKestrel()
+                .ConfigureMetricsWithDefaults(builder =>
+                {
+                    builder.Report.ToConsole(TimeSpan.FromSeconds(2));
+                })
+                
                 .UseStartup<Startup>()
+                .UseMetrics()
                 .UseDefaultServiceProvider(options => options.ValidateScopes = true)
                 .ConfigureAppConfiguration(
                     (hostingContext, config) => config

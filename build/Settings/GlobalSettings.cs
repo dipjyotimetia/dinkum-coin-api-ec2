@@ -4,7 +4,7 @@ namespace Build.Settings
 {
     public class GlobalSettings
     { 
-        public const string AmiId = "ami-ad5ba9cf";
+        public const string AmiId = "ami-6765a105";
         public const string ApplicationName = "Dinkum Coin API";
         public const string BucketName = "dinkum-coin-api-packages-dev";
         public const string BucketWriteRoleArn = "arn:aws:iam::" + WgtpocAccountId + ":role/DinkumCoinApi-WriteBucketRole";

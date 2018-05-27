@@ -96,19 +96,19 @@ namespace Build.Targets
 
         private string GetBuildVersion()
         {
-          //  if (_buildVersion != null) { return _buildVersion; }
+            if (_buildVersion != null) { return _buildVersion; }
 
-          //  string branch = Git.GetBranchName(RootDirectory);
+            string branch = Git.GetBranchName(RootDirectory);
 
-         //   branch = branch == "master" ? "" : "-" + branch.Replace("/", "-").Substring(0,14);
+            branch = branch == "master" ? "" : "-" + branch.Replace("/", "-").Substring(0,14);
 
-            return _buildVersion = GetSemanticBuildVersion() ;//+ branch;
+            return _buildVersion = GetSemanticBuildVersion() + branch;
         }
 
         private string GetSemanticBuildVersion()
         {
-            //return $"1.0.{Git.GetCommitCount(RootDirectory)}";
-            return $"1.0.17";
+            return $"1.0.{Git.GetCommitCount(RootDirectory)}";
+           // return $"1.0.17";
         }
     }
 }
