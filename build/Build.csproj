@@ -20,6 +20,8 @@
     <PackageReference Include="AWSSDK.SimpleSystemsManagement" Version="3.3.17.2" />
 <!--    <PackageReference Include="LibGit2Sharp" Version="0.24.0" />-->
     <PackageReference Include="LibGit2Sharp" Version="0.25.0" />
+        <PackageReference Include="GitVersion.CommandLine" Version="4.0.0-beta0011" />
+
     </ItemGroup>
 
   <ItemGroup>
