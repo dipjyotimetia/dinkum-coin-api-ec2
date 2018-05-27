@@ -35,7 +35,8 @@ namespace DinkumCoin.Api
                     .AllowCredentials());
             })
             .AddOptions()
-                .AddMvcServices();
+            .AddMvcServices();
+
             services.AddTransient<IMathService, MathService>();
             services.AddTransient<IMiningService, MiningService>();
             services.TryAddSingleton<IDinkumRepository, InMemoryRepository>();

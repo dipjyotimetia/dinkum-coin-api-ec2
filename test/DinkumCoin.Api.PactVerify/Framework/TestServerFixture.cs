@@ -9,6 +9,18 @@ using DinkumCoin.Core.Contracts;
 using DinkumCoin.Services;
 using DinkumCoin.Data.Repositories;
 
+using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Extensions.Logging;
+using Serilog.Formatting.Json;
+using Serilog.Sinks.RollingFileAlternate;
+
+using App.Metrics;
+using App.Metrics.AspNetCore;
+using System;
+using System.Net;
+using DinkumCoin.Api.Configuration;
+
 namespace DinkumCoin.Api.PactVerify.Framework
 {
 public class TestServerFixture
@@ -17,26 +29,70 @@ public class TestServerFixture
         {
             return new WebHostBuilder()
                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseUrls(baseUrl)
+               .UseUrls(baseUrl)
                .UseKestrel()
-                .Configure(app => app
-                 //  .UseMiddleware<ProviderStateMiddleware>()
-                   .UseMvc()
-                   )
-                .ConfigureServices( services => {services
-                    .AddOptions()
-                    .AddMvcServices();
-                    services.AddTransient<IMathService, MathService>();
-                    services.AddTransient<IMiningService, MiningService>();
-                    services.TryAddSingleton<IDinkumRepository, InMemoryRepository>();
-                }) 
+                .ConfigureMetricsWithDefaults(builder =>
+                {
+                    builder.Report.ToConsole(TimeSpan.FromSeconds(2));
+                })
+                .UseStartup<Startup>()
+                .UseMetrics()
                .UseDefaultServiceProvider(options => options.ValidateScopes = true)
                .ConfigureAppConfiguration(
                    (hostingContext, config) => config
                        .AddEnvironmentVariables("DinkumCoin_")
-                    .AddJsonFile($"appsettings.json", false))
+                        .AddJsonFile($"appsettings.json", false))
+                .ConfigureLogging((hostingContext, logging) =>
+                    logging.AddProvider(CreateLoggerProvider(hostingContext.Configuration)))
                 .Build();
                
         }
+
+        /*
+         * 
+         * 
+         *         {
+            new WebHostBuilder()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseUrls("http://*:5000")
+                .UseKestrel()
+                .ConfigureMetricsWithDefaults(builder =>
+                {
+                    builder.Report.ToConsole(TimeSpan.FromSeconds(2));
+                })
+                
+                .UseStartup<Startup>()
+                .UseMetrics()
+                .UseDefaultServiceProvider(options => options.ValidateScopes = true)
+                .ConfigureAppConfiguration(
+                    (hostingContext, config) => config
+                        .AddEnvironmentVariables("DinkumCoin_")
+                        .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true)
+                        .AddCommandLine(args))
+                .ConfigureLogging((hostingContext, logging) =>
+                    logging.AddProvider(CreateLoggerProvider(hostingContext.Configuration)))
+                .Build()
+                .Run();
+        }*/
+
+
+
+
+
+
+
+        private static SerilogLoggerProvider CreateLoggerProvider(IConfiguration configuration)
+        {
+            LoggerConfiguration logConfig = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.RollingFileAlternate(new JsonFormatter(), "./logs", fileSizeLimitBytes: 10000000, retainedFileCountLimit: 30)
+                .ReadFrom.Configuration(configuration)
+                .Enrich.WithProperty("ApplicationVersion", ApplicationVersion.Value)
+                .Enrich.WithProperty("Hostname", Dns.GetHostName())
+                .Enrich.FromLogContext();
+
+            return new SerilogLoggerProvider(logConfig.CreateLogger());
+        }
+
     }
 }

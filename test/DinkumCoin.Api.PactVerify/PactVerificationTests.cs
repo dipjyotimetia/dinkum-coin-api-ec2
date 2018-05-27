@@ -22,7 +22,7 @@ namespace DinkumCoin.Api.PactTests
         public void EnsureDinkumCoinApiHonoursPactWithConsumer()
         {
             //Arrange
-            const string baseUrl = "http://localhost:9009";
+            const string baseUrl = "http://localhost:9011";
             var fixture = new TestServerFixture();
 
             var config = new PactVerifierConfig

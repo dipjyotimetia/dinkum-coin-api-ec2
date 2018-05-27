@@ -72,7 +72,8 @@ namespace Build.Targets
                  settings => settings
                 .SetConfiguration("Release")
                 .SetProjectFile(Settings.TestDirectory / "DinkumCoin.Api.PactVerify")
-                    .SetNoBuild(true)));
+                .SetNoBuild(true))
+            );
 
         public Target Upload => _ => _
              .Description("Upload application package to S3")
@@ -88,7 +89,7 @@ namespace Build.Targets
             .DependsOn(Unit_Test)
              .Executes(() =>
              {
-                 ProcessTasks.StartProcess(
+                ProcessTasks.StartProcess(
                 DotnetPath, $"publish -c Release -r linux-x64 /p:Version=\"{GetBuildVersion()}\" -o \"{Settings.PublishDirectory}\"", Settings.SourceDirectory / "DinkumCoin.Api").AssertZeroExitCode();
 
                  Directory.CreateDirectory(Settings.PackageDirectory);
