@@ -26,7 +26,8 @@ namespace DinkumCoin.Api
                 .UseKestrel()
                 .ConfigureMetricsWithDefaults(builder =>
                 {
-                    builder.Report.ToConsole(TimeSpan.FromSeconds(2));
+                    builder.Report.ToGraphite("http://127.0.0.1:2003", TimeSpan.FromSeconds(5));
+                   // builder.Report.ToConsole(TimeSpan.FromSeconds(2));
                 })
                 
                 .UseStartup<Startup>()
