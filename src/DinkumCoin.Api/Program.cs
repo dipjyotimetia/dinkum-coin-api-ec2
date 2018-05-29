@@ -4,7 +4,6 @@ using System.Net;
 using App.Metrics;
 using App.Metrics.AspNetCore;
 using DinkumCoin.Api.Configuration;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -26,10 +25,8 @@ namespace DinkumCoin.Api
                 .UseKestrel()
                 .ConfigureMetricsWithDefaults(builder =>
                 {
-                    builder.Report.ToGraphite("http://127.0.0.1:2003", TimeSpan.FromSeconds(5));
-                   // builder.Report.ToConsole(TimeSpan.FromSeconds(2));
+                    builder.Report.ToGraphite("net.udp://127.0.0.1:2003", TimeSpan.FromSeconds(5));
                 })
-                
                 .UseStartup<Startup>()
                 .UseMetrics()
                 .UseDefaultServiceProvider(options => options.ValidateScopes = true)
@@ -58,5 +55,6 @@ namespace DinkumCoin.Api
 
             return new SerilogLoggerProvider(logConfig.CreateLogger());
         }
+
     }
 }

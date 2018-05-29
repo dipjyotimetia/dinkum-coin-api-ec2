@@ -27,16 +27,16 @@ namespace DinkumCoin.Api
         {
             services
                 .AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
-            })
-            .AddOptions()
-            .AddMvcServices();
-
+                {
+                    options.AddPolicy("CorsPolicy",
+                        builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+                })
+                .AddOptions()
+                .AddMvcServices();
+            
             services.AddTransient<IMathService, MathService>();
             services.AddTransient<IMiningService, MiningService>();
             services.TryAddSingleton<IDinkumRepository, InMemoryRepository>();
