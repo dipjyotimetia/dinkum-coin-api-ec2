@@ -10,7 +10,7 @@
             Ec2SecurityGroupIds = "sg-15439b72,sg-0b9b1872";
             Application.KeyPairName = "Stu-P-key";
 
-            InstanceType = "t2.nano";
+            InstanceType = "t2.small";
             DesiredInstanceCount = 1;
             MinInstanceCount = 1;
             MaxInstanceCount = 2;
