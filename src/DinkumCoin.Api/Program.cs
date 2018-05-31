@@ -25,7 +25,7 @@ namespace DinkumCoin.Api
                 .UseKestrel()
                 .ConfigureMetricsWithDefaults(builder =>
                 {
-                    builder.Report.ToGraphite("net.udp://127.0.0.1:2003", TimeSpan.FromSeconds(5));
+                    builder.Report.ToGraphite("net.tcp://127.0.0.1:2003", TimeSpan.FromSeconds(5));
                 })
                 .UseStartup<Startup>()
                 .UseMetrics()
