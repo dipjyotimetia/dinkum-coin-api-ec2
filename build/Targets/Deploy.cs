@@ -67,7 +67,7 @@ namespace Build.Targets
             var appRoleName =  GetStackOutputValue(StackName.Application, "DinkumApiAppRoleName");
 
             UpsertStack(
-                StackName.DynamoDB, Settings.TemplateDirectory / "DynamoDB.yaml",
+                StackName.DynamoDB, Settings.TemplateDirectory / "DynamoDB.yaml", 
                 new List<Parameter>
                 {
                 new Parameter { ParameterKey = "DinkumApiAppIamRole", ParameterValue = appRoleName }
