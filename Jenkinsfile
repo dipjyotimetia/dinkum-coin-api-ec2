@@ -38,6 +38,10 @@ pipeline {
  			}
 		}
 		stage("Verify Pacts")  {
+			environment {
+			ASPNETCORE_ENVIRONMENT = "local"
+		}
+
 		steps {
 		//		deleteDir()
 		//		unstash "solution"
