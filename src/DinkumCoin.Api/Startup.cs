@@ -17,14 +17,16 @@ namespace DinkumCoin.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env,IConfiguration configuration)
         {
             Configuration = configuration;
+            _env = env;
         }
 
         public IConfiguration Configuration { get; }
+        private IHostingEnvironment _env;
 
-        public void ConfigureServices(IServiceCollection services, IHostingEnvironment env)
+        public void ConfigureServices(IServiceCollection services)
         {
             services
                 .AddCors(options =>
@@ -40,7 +42,7 @@ namespace DinkumCoin.Api
             
             services.AddTransient<IMathService, MathService>();
             services.AddTransient<IMiningService, MiningService>();
-            if (env.IsEnvironment("local"))
+            if (_env.IsEnvironment("local"))
             {
                 services.TryAddSingleton<IDinkumRepository, InMemoryRepository>();
             }

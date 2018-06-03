@@ -117,7 +117,6 @@ namespace Build.Targets
         private string GetSemanticBuildVersion()
         {
             return $"1.0.{Git.GetCommitCount(RootDirectory)}";
-           // return $"1.0.17";
         }
     }
 }
