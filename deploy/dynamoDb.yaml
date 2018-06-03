@@ -1,9 +1,9 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: "DynamoDB table used by DinkumCoin lambdas"
+Description: "DynamoDB table used by DinkumCoin Api"
 
 Parameters: 
-  IamRoleLambdaExecution:
-    Description: Arn of IAM Role used by lambda
+  DinkumApiAppIamRole:
+    Description: Name of IAM Role used by Application
     Type: String    
 
 Outputs:
@@ -29,7 +29,7 @@ Resources:
     Type: AWS::IAM::Policy
     DependsOn: DynamoDbWalletTable
     Properties:
-      PolicyName: lambda-dynamodb
+      PolicyName: dinkum-dynamodb
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -41,4 +41,4 @@ Resources:
              - dynamodb:Scan
            Resource: arn:aws:dynamodb:*:*:table/Wallet
       Roles:
-       - Ref: IamRoleLambdaExecution
+       - Ref: DinkumApiAppIamRole

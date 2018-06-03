@@ -62,6 +62,16 @@ namespace Build.Targets
                 new Parameter { ParameterKey = "VpcCidr", ParameterValue = EnvironmentSettings.VpcCidr },
                     new Parameter { ParameterKey = "VpcId", ParameterValue = EnvironmentSettings.VpcId },
                 }, StackTags.Union(new[] { new Tag { Key = "Version", Value = GetBuildVersion() } }).ToList(), true);
+
+
+            var appRoleName =  GetStackOutputValue(StackName.Application, "DinkumApiAppRoleName");
+
+            UpsertStack(
+                StackName.DynamoDB, Settings.TemplateDirectory / "DynamoDB.yaml",
+                new List<Parameter>
+                {
+                new Parameter { ParameterKey = "DinkumApiAppIamRole", ParameterValue = appRoleName }
+                }, StackTags, true);
             });
 
 

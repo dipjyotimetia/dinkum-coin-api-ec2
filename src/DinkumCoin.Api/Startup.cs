@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.AspNetCore.Hosting;
 
 namespace DinkumCoin.Api
 {
@@ -23,7 +24,7 @@ namespace DinkumCoin.Api
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services, IHostingEnvironment env)
         {
             services
                 .AddCors(options =>
@@ -39,8 +40,14 @@ namespace DinkumCoin.Api
             
             services.AddTransient<IMathService, MathService>();
             services.AddTransient<IMiningService, MiningService>();
-            services.TryAddSingleton<IDinkumRepository, InMemoryRepository>();
-
+            if (env.IsEnvironment("local"))
+            {
+                services.TryAddSingleton<IDinkumRepository, InMemoryRepository>();
+            }
+            else
+            {
+                services.TryAddSingleton<IDinkumRepository, DynamoRepository>();
+            }
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "DinkumCoin Service", Version = "v1" });

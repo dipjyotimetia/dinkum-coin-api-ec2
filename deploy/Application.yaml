@@ -12,6 +12,9 @@ Outputs:
     Value: !Ref "MinInstanceCount"
   Version:
     Value: !Ref "VersionToDeploy"
+  DinkumApiAppRoleName:
+    Description: "name of instance role"
+    Value: !Ref "InstanceRole"
 Parameters:
   AmiId:
     Description: "Machine image ID"
